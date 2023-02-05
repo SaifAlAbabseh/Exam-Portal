@@ -2,16 +2,13 @@ package examportal;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import java.awt.FlowLayout;
 import java.awt.Color;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
 import java.awt.Font;
 import javax.swing.border.LineBorder;
 import javax.swing.JButton;
@@ -19,8 +16,6 @@ import java.awt.Cursor;
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
 import java.sql.Statement;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -133,15 +128,22 @@ public class AttendMain extends JFrame {
 				hour = result.getString(4);
 				minute = result.getString(5);
 				duration = result.getString(6);
+				
+				GeoMain geo = new GeoMain();
+				
+				int[] date = geo.getDate();
 
-				int dayInt = new GregorianCalendar().get(Calendar.DAY_OF_MONTH);
-				int monthInt = new GregorianCalendar().get(Calendar.MONTH) + 1;
-				int yearInt = new GregorianCalendar().get(Calendar.YEAR);
-				int hourInt = new GregorianCalendar().get(Calendar.HOUR_OF_DAY);
+				int dayInt = date[2];
+				int monthInt = date[1];
+				int yearInt = date[0];
+				
+				int[] time = geo.getTime();
+				
+				int hourInt = time[0];
 				if (hourInt == 0) {
 					hourInt = 24;
 				}
-				int minuteInt = new GregorianCalendar().get(Calendar.MINUTE);
+				int minuteInt = time[1];
 				int durationInt = Integer.parseInt(duration);
 
 				if (Integer.parseInt(year) == yearInt && Integer.parseInt(month) == monthInt && Integer.parseInt(day) == dayInt) {

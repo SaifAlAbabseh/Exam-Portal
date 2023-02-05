@@ -1,8 +1,5 @@
 package examportal;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -18,72 +15,73 @@ public class Timer extends Thread{
 	}
 	
 	private String getDuration() {
-		/*int ttemp=(60-minuteInt)+m;
-		int tttemp=h-hourInt;
-		if(tttemp>1) {
-			tttemp--;
-			
-		}
-		else {
-			
-		}*/
 		
 		int d=StartExam.duration;
 		
-		
-		int hourInt = new GregorianCalendar().get(Calendar.HOUR_OF_DAY);
-		if(hourInt==0) {
-			hourInt=24;
-		}
-		int minuteInt = new GregorianCalendar().get(Calendar.MINUTE);
-		
-		
-		int secondInt = new GregorianCalendar().get(Calendar.SECOND);
-		
-		
-		
-		
-		int temp=d+StartExam.minute;
-		
-		int hoursMore=temp/60;
-		int minutesMore=temp%60;
-		
-		int h=hoursMore+StartExam.hour;
-		int m=minutesMore;
-		
-		
-		
-		if(h>24) {
-			hourInt = hourInt + StartExam.hour;
-		}
-		
-		if(hourInt==StartExam.hour && minuteInt>=StartExam.minute) {
-			d-=(minuteInt-StartExam.minute);
-		}
-		else if(hourInt==h && minuteInt<m) {
-			d=(m-minuteInt);
-		}
-		else if(hourInt>StartExam.hour && hourInt<h) {
-			int hl,ml;
-			if(m>=minuteInt) {
-				hl=h-hourInt;
-				ml=m-minuteInt;
+		try {
+			GeoMain geo = new GeoMain();
+			int[] time = geo.getTime();
+			
+			int hourInt = time[0];
+			if(hourInt==0) {
+				hourInt=24;
 			}
-			else {
-				hl=(h-hourInt)-1;
-				int mml=60-minuteInt;
-				ml=mml+m;
+			int minuteInt = time[1];
+			
+			
+			int secondInt = time[2];
+			
+			
+			
+			
+			int temp=d+StartExam.minute;
+			
+			int hoursMore=temp/60;
+			int minutesMore=temp%60;
+			
+			int h=hoursMore+StartExam.hour;
+			int m=minutesMore;
+			
+			
+			
+			if(h>24) {
+				hourInt = hourInt + StartExam.hour;
 			}
-			d=(hl*60)+ml;
+			
+			if(hourInt==StartExam.hour && minuteInt>=StartExam.minute) {
+				d-=(minuteInt-StartExam.minute);
+			}
+			else if(hourInt==h && minuteInt<m) {
+				d=(m-minuteInt);
+			}
+			else if(hourInt>StartExam.hour && hourInt<h) {
+				int hl,ml;
+				if(m>=minuteInt) {
+					hl=h-hourInt;
+					ml=m-minuteInt;
+				}
+				else {
+					hl=(h-hourInt)-1;
+					int mml=60-minuteInt;
+					ml=mml+m;
+				}
+				d=(hl*60)+ml;
+			}
+			
+			
+			if(secondInt>0) {
+				d--;
+				secondInt = 60 - secondInt;
+			}
+			
+			return ""+d+"."+secondInt;
+		}
+		catch(Exception e) {
+			System.exit(0);
 		}
 		
+		return null;
 		
-		if(secondInt>0) {
-			d--;
-			secondInt = 60 - secondInt;
-		}
-		
-		return ""+d+"."+secondInt;
 	}
 	@Override
 	public void run() {
