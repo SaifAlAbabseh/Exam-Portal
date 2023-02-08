@@ -5,7 +5,12 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.HashMap;
+import javax.swing.JOptionPane;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -67,13 +72,19 @@ class GeoInfo {
 }
 
 public class GeoMain {
-	private final String apiKey = "29acba168e9e4861aeab645f36553625";
+	private final String apiKey;
 	private HttpRequest request;
 	private HttpClient client;
 	private HttpResponse<String> result;
 	private GeoInfo parent;
 	
 	public GeoMain() throws Exception{
+		apiKey = getAPIKey();
+		
+		if(apiKey == null) {
+			System.exit(0);
+		}
+		
 		request = HttpRequest.newBuilder().uri(URI.create("https://api.ipgeolocation.io/getip")).build();
 		client = HttpClient.newHttpClient();
 		result = client.send(request, BodyHandlers.ofString());
@@ -107,5 +118,24 @@ public class GeoMain {
 		GeoInfo geoInfo = gson.fromJson(result.body(), GeoInfo.class);
 		
 		return geoInfo;
+	}
+	
+	private String getAPIKey() {
+		try {
+			Connection conn = DriverManager.getConnection(DBInfo.host, DBInfo.username, DBInfo.password);
+			Statement stmt = conn.createStatement();
+			String query = "SELECT time_api_key FROM auth_info";
+			ResultSet result = stmt.executeQuery(query);
+			if(result.next()) {
+				return result.getString(1);
+			}
+			conn.close();
+			stmt.close();
+		}
+		catch(Exception e) {
+			System.out.println(e.getMessage());
+			JOptionPane.showMessageDialog(null, "Connection Error", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		return null;
 	}
 }

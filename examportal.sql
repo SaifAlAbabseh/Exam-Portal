@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 15, 2022 at 10:15 AM
+-- Generation Time: Feb 08, 2023 at 06:22 PM
 -- Server version: 8.0.17
 -- PHP Version: 7.3.10
 
@@ -21,6 +21,16 @@ SET time_zone = "+00:00";
 --
 -- Database: `examportal`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `auth_info`
+--
+
+CREATE TABLE `auth_info` (
+  `time_api_key` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
