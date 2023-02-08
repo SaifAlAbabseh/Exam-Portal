@@ -133,7 +133,6 @@ public class GeoMain {
 			stmt.close();
 		}
 		catch(Exception e) {
-			System.out.println(e.getMessage());
 			JOptionPane.showMessageDialog(null, "Connection Error", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 		return null;
